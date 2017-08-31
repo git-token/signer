@@ -1,0 +1,36 @@
+{
+  "name": "gittoken-signer",
+  "version": "0.0.1",
+  "description": "GitToken Transaction and Message Signer",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "mocha",
+    "build": "babel ./src/ --out-dir ./dist/ --plugins transform-runtime"
+  },
+  "keywords": [
+    "GitToken",
+    "Ethereum",
+    "Signer",
+    "Wallet",
+    "ERC20",
+    "Git"
+  ],
+  "author": "Ryan Tate <ryan.tate@gittoken.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-inline-import": "^2.0.5",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-runtime": "^6.23.0",
+    "chai": "^4.0.1"
+  },
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "ethereumjs-util": "^5.1.2",
+    "gittoken-keystore-generator": "0.0.6"
+  }
+}
