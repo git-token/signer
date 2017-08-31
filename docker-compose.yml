@@ -1,0 +1,10 @@
+version: '3.0'
+services:
+  signer:
+    env_file:
+      - .env
+    build:
+      context: .
+    volumes:
+      - /root/gittoken-signer/:/mnt/
+    ipc: host
