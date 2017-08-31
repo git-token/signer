@@ -5,7 +5,7 @@ import path from 'path'
 import handleMsg from './handleMsg'
 
 export default class GitTokenSigner  {
-  constructor({ ipcPath, dirPath, recover, web3Provider }) {
+  constructor({ signerIpcPath, dirPath, recover, web3Provider }) {
     new KeystoreGenerator({
       dirPath,
       recover,
@@ -19,8 +19,8 @@ export default class GitTokenSigner  {
         this.socket.on('data', this.handleMsg)
       })
 
-      this.server.listen({ path: ipcPath}, () => {
-        console.log('GitToken Signer Listening at path: ', ipcPath)
+      this.server.listen({ path: signerIpcPath}, () => {
+        console.log('GitToken Signer Listening at path: ', signerIpcPath)
       })
 
     }).catch((error) => {

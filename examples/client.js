@@ -1,9 +1,9 @@
 const net = require('net')
-const { ipcPath } = require('../config')
+const { signerIpcPath } = require('../config')
 const { sha3 } = require('ethereumjs-util')
 const Promise = require('bluebird')
 
-let client = net.connect(ipcPath)
+let client = net.connect(signerIpcPath)
 
 Promise.delay(0, client.write(JSON.stringify({
   event: 'sign_transaction',

@@ -29,7 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var GitTokenSigner = function GitTokenSigner(_ref) {
   var _this = this;
 
-  var ipcPath = _ref.ipcPath,
+  var signerIpcPath = _ref.signerIpcPath,
       dirPath = _ref.dirPath,
       recover = _ref.recover,
       web3Provider = _ref.web3Provider;
@@ -48,8 +48,8 @@ var GitTokenSigner = function GitTokenSigner(_ref) {
       _this.socket.on('data', _this.handleMsg);
     });
 
-    _this.server.listen({ path: ipcPath }, function () {
-      console.log('GitToken Signer Listening at path: ', ipcPath);
+    _this.server.listen({ path: signerIpcPath }, function () {
+      console.log('GitToken Signer Listening at path: ', signerIpcPath);
     });
   }).catch(function (error) {
     console.log('error', error);

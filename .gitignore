@@ -1,3 +1,5 @@
 node_modules
 .env
 signer.sock
+keystore.json
+secrets.json
