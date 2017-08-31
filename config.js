@@ -15,7 +15,8 @@
 
 
 const config = {
-  signerIpcPath: process.env['SIGNER_IPC_PATH']
+  signerIpcPath: process.env['SIGNER_IPC_PATH'],
+  recover: process.env['RECOVER_KEYSTORE']
 }
 
 module.exports = config
