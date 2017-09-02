@@ -16,7 +16,10 @@
 
 const config = {
   signerIpcPath: process.env['SIGNER_IPC_PATH'],
-  recover: process.env['RECOVER_KEYSTORE']
+  recover: process.env['RECOVER_KEYSTORE'],
+  recoveryShare: process.env['RECOVERY_SHARE'],
+  web3Provider: process.env['WEB3_PROVIDER'],
+  dirPath: process.env['KEYSTORE_DIR_PATH']
 }
 
 module.exports = config

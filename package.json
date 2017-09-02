@@ -32,7 +32,8 @@
   "dependencies": {
     "dotenv": "^4.0.0",
     "ethereumjs-util": "^5.1.2",
-    "gittoken-keystore-generator": "0.0.8",
+    "gittoken-contracts": "0.0.37",
+    "gittoken-keystore-generator": "0.0.13",
     "web3": "^0.20.0"
   }
 }

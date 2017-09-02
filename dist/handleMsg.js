@@ -56,6 +56,20 @@ function handleMsg(msg) {
           _this.socket.write((0, _stringify2.default)({ error: error.message }));
         });
         break;
+      case 'deploy_contract':
+        _this.deployContract((0, _extends3.default)({}, data)).then(function (txReceipt) {
+          _this.socket.write((0, _stringify2.default)({ event: event, result: txReceipt, message: 'GitToken Contract Deployed' }));
+        }).catch(function (error) {
+          _this.socket.write((0, _stringify2.default)({ error: error.message }));
+        });
+        break;
+      case 'reward_contributor':
+        _this.rewardContributor((0, _extends3.default)({}, data)).then(function (txReceipt) {
+          _this.socket.write((0, _stringify2.default)({ event: event, result: txReceipt, message: 'Contributor Rewarded' }));
+        }).catch(function (error) {
+          _this.socket.write((0, _stringify2.default)({ error: error.message }));
+        });
+        break;
       default:
         _this.socket.write((0, _stringify2.default)({ event: 'invalid_event', result: null, message: 'Invalid event: ' + event }));
     }

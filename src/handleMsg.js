@@ -31,6 +31,20 @@ export default function handleMsg(msg) {
             this.socket.write(JSON.stringify({ error: error.message }))
           })
           break;
+        case 'deploy_contract':
+          this.deployContract({ ...data }).then((txReceipt) => {
+            this.socket.write(JSON.stringify({ event, result: txReceipt, message: 'GitToken Contract Deployed' }))
+          }).catch((error) => {
+            this.socket.write(JSON.stringify({ error: error.message }))
+          });
+          break;
+        case 'reward_contributor':
+          this.rewardContributor({ ...data }).then((txReceipt) => {
+            this.socket.write(JSON.stringify({ event, result: txReceipt, message: 'Contributor Rewarded' }))
+          }).catch((error) => {
+            this.socket.write(JSON.stringify({ error: error.message }))
+          });
+          break;
         default:
           this.socket.write(JSON.stringify({ event: 'invalid_event', result: null, message: `Invalid event: ${event}` }))
       }
