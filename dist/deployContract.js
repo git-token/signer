@@ -36,6 +36,8 @@ function deployContract(_ref) {
         unlinked_binary = _gitTokenContract.unlinked_binary;
 
 
+    var txReceipt = void 0;
+
     _bluebird2.default.resolve((_wallet$eth$contract$ = _this.wallet.eth.contract(abi).new).getData.apply(_wallet$eth$contract$, (0, _toConsumableArray3.default)(params).concat([{
       data: unlinked_binary
     }]))).then(function (data) {
@@ -52,8 +54,20 @@ function deployContract(_ref) {
       return _this.wallet.eth.sendRawTransactionAsync('0x' + signedTx);
     }).then(function (txHash) {
       return _this.wallet.getTransactionReceipt(txHash);
-    }).then(function (txReceipt) {
+    }).then(function (_txReceipt) {
+      txReceipt = _txReceipt;
       _this.gitTokenContract['address'] = txReceipt['contractAddress'];
+      return (0, _bluebird.join)(_this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).name.call(), _this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).organization.call(), _this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).decimals.call(), _this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).symbol.call(), _this.saveTxReceipt(txReceipt));
+    }).then(function (contractData) {
+      return _this.saveContractAddress({
+        address: txReceipt['contractAddress'],
+        name: contractData[0],
+        organization: contractData[1],
+        decimals: contractData[2],
+        symbol: contractData[3],
+        date: new Date().getTime()
+      });
+    }).then(function (result) {
       resolve(txReceipt);
     }).catch(function (error) {
       reject(error);

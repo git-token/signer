@@ -11,6 +11,8 @@ export default function deployContract({ params, recoveryShare }) {
 
     const { abi, unlinked_binary } = this.gitTokenContract;
 
+    let txReceipt
+
     Promise.resolve(this.wallet.eth.contract(abi).new.getData(...params, {
       data: unlinked_binary
     })).then((data) => {
@@ -27,8 +29,26 @@ export default function deployContract({ params, recoveryShare }) {
       return this.wallet.eth.sendRawTransactionAsync(`0x${signedTx}`)
     }).then((txHash) => {
       return this.wallet.getTransactionReceipt(txHash)
-    }).then((txReceipt) => {
+    }).then((_txReceipt) => {
+      txReceipt = _txReceipt
       this.gitTokenContract['address'] = txReceipt['contractAddress']
+      return join(
+        this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).name.call(),
+        this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).organization.call(),
+        this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).decimals.call(),
+        this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).symbol.call(),
+        this.saveTxReceipt(txReceipt)
+      )
+    }).then((contractData) => {
+      return this.saveContractAddress({
+        address: txReceipt['contractAddress'],
+        name: contractData[0],
+        organization: contractData[1],
+        decimals: contractData[2],
+        symbol: contractData[3],
+        date: new Date().getTime()
+      })
+    }).then((result) => {
       resolve(txReceipt)
     }).catch((error) => {
       reject(error)

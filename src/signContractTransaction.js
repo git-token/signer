@@ -18,6 +18,7 @@ export default function signContractTransaction({ method, params, recoveryShare 
         return address;
       }
     }).then((_address) => {
+      console.log('_address', _address)
       address = _address
       return this.wallet.eth.contract(abi).at(address)[method].getData(...params)
     }).then((data) => {
@@ -36,7 +37,12 @@ export default function signContractTransaction({ method, params, recoveryShare 
     }).then((txHash) => {
       return this.wallet.getTransactionReceipt(txHash)
     }).then((txReceipt) => {
-      resolve(txReceipt)
+      return join(
+        txReceipt,
+        this.saveTxReceipt(txReceipt)
+      )
+    }).then((data) => {
+      resolve(data[0])
     }).catch((error) => {
       reject(error)
     })

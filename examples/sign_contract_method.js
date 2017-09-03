@@ -24,6 +24,6 @@ client.write(JSON.stringify({
 
 
 client.on('data', (data) => {
-  console.log('data', JSON.stringify(JSON.parse(data), null, 2))
+  console.log('data', JSON.parse(data))
   process.exit()
 })

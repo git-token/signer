@@ -45,6 +45,7 @@ function signContractTransaction(_ref) {
     }).then(function (_address) {
       var _wallet$eth$contract$;
 
+      console.log('_address', _address);
       address = _address;
       return (_wallet$eth$contract$ = _this.wallet.eth.contract(abi).at(address)[method]).getData.apply(_wallet$eth$contract$, (0, _toConsumableArray3.default)(params));
     }).then(function (data) {
@@ -63,7 +64,9 @@ function signContractTransaction(_ref) {
     }).then(function (txHash) {
       return _this.wallet.getTransactionReceipt(txHash);
     }).then(function (txReceipt) {
-      resolve(txReceipt);
+      return (0, _bluebird.join)(txReceipt, _this.saveTxReceipt(txReceipt));
+    }).then(function (data) {
+      resolve(data[0]);
     }).catch(function (error) {
       reject(error);
     });
