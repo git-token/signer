@@ -33,14 +33,14 @@ export default function handleMsg(msg) {
           break;
         case 'deploy_contract':
           this.deployContract({ ...data }).then((txReceipt) => {
-            this.socket.write(JSON.stringify({ event, result: txReceipt, message: 'GitToken Contract Deployed' }))
+            this.socket.write(JSON.stringify({ event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }))
           }).catch((error) => {
             this.socket.write(JSON.stringify({ error: error.message }))
           });
           break;
-        case 'reward_contributor':
-          this.rewardContributor({ ...data }).then((txReceipt) => {
-            this.socket.write(JSON.stringify({ event, result: txReceipt, message: 'Contributor Rewarded' }))
+        case 'sign_contract_transaction':
+          this.signContractTransaction({ ...data }).then((txReceipt) => {
+            this.socket.write(JSON.stringify({ event, result: txReceipt, message: 'GitToken Contract Method Transaction Receipt' }))
           }).catch((error) => {
             this.socket.write(JSON.stringify({ error: error.message }))
           });

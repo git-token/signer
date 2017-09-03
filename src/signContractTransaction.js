@@ -6,16 +6,24 @@ import Promise, { promisifyAll, join } from 'bluebird'
  * @param  {String} recoveryShare Recovery Share for unlocking signer key
  * @return [Promise]              Resolves promise with txReceipt of contract
  */
-export default function deployContract({ params, recoveryShare }) {
+export default function signContractTransaction({ method, params, recoveryShare }) {
   return new Promise((resolve, reject) => {
 
-    const { abi, unlinked_binary } = this.gitTokenContract;
+    let { abi, unlinked_binary, address } = this.gitTokenContract;
 
-    Promise.resolve(this.wallet.eth.contract(abi).new.getData(...params, {
-      data: unlinked_binary
-    })).then((data) => {
+    Promise.resolve(address).then((exists) => {
+      if (!exists) {
+        return this.getContractAddress()
+      } else {
+        return address;
+      }
+    }).then((_address) => {
+      address = _address
+      return this.wallet.eth.contract(abi).at(address)[method].getData(...params)
+    }).then((data) => {
       return this.wallet.signTransaction({
         transaction: {
+          to: address,
           data,
           gasPrice: 4e9, // 4 Gwei
           gasLimit: 6e6,
@@ -28,7 +36,6 @@ export default function deployContract({ params, recoveryShare }) {
     }).then((txHash) => {
       return this.wallet.getTransactionReceipt(txHash)
     }).then((txReceipt) => {
-      this.gitTokenContract['address'] = txReceipt['contractAddress']
       resolve(txReceipt)
     }).catch((error) => {
       reject(error)
