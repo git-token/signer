@@ -28,5 +28,6 @@ Promise.delay(0, client.write(JSON.stringify({
 })
 
 client.on('data', (data) => {
-  console.log('data', JSON.parse(data))
+  console.log('data', JSON.stringify(JSON.parse(data), null, 2))
+  process.exit()
 })
