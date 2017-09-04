@@ -1,6 +1,6 @@
 {
   "name": "gittoken-signer",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "GitToken Transaction and Message Signer",
   "main": "./dist/index.js",
   "scripts": {
@@ -33,7 +33,7 @@
     "dotenv": "^4.0.0",
     "ethereumjs-util": "^5.1.2",
     "gittoken-contracts": "0.0.38",
-    "gittoken-keystore-generator": "0.0.14",
+    "gittoken-keystore-generator": "0.0.15",
     "mysql": "^2.14.1",
     "web3": "^0.20.0"
   }
