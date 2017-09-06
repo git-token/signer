@@ -30,6 +30,13 @@ export default function handleMsg(msg) {
         this.socket.write(JSON.stringify({ error: error.message }))
       })
       break;
+    case 'get_contract':
+      this.getContractAddress().then((address) => {
+        this.socket.write(JSON.stringify({ event, result: address, message: 'Contract Address' }))
+      }).catch((error) => {
+        this.socket.write(JSON.stringify({ error: error.message }))
+      })
+      break;
     case 'deploy_contract':
       this.deployContract({ ...data }).then((txReceipt) => {
         this.socket.write(JSON.stringify({ event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }))

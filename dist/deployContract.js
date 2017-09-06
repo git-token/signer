@@ -57,7 +57,10 @@ function deployContract(_ref) {
     }).then(function (_txReceipt) {
       txReceipt = _txReceipt;
       _this.gitTokenContract['address'] = txReceipt['contractAddress'];
-      return (0, _bluebird.join)(_this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).name.call(), _this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).organization.call(), _this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).decimals.call(), _this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).symbol.call(), _this.saveTxReceipt(txReceipt));
+
+      var contract = _this.wallet.eth.contract(abi).at(txReceipt['contractAddress']);
+
+      return (0, _bluebird.join)(contract.name.call(), contract.organization.call(), contract.decimals.call(), contract.symbol.call(), _this.saveTxReceipt(txReceipt));
     }).then(function (contractData) {
       return _this.saveContractAddress({
         address: txReceipt['contractAddress'],

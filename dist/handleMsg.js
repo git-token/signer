@@ -55,6 +55,13 @@ function handleMsg(msg) {
         _this.socket.write((0, _stringify2.default)({ error: error.message }));
       });
       break;
+    case 'get_contract':
+      this.getContractAddress().then(function (address) {
+        _this.socket.write((0, _stringify2.default)({ event: event, result: address, message: 'Contract Address' }));
+      }).catch(function (error) {
+        _this.socket.write((0, _stringify2.default)({ error: error.message }));
+      });
+      break;
     case 'deploy_contract':
       this.deployContract((0, _extends3.default)({}, data)).then(function (txReceipt) {
         _this.socket.write((0, _stringify2.default)({ event: event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }));

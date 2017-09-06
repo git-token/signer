@@ -32,11 +32,15 @@ export default function deployContract({ params, recoveryShare }) {
     }).then((_txReceipt) => {
       txReceipt = _txReceipt
       this.gitTokenContract['address'] = txReceipt['contractAddress']
+
+      const contract = this.wallet.eth.contract(abi)
+        .at(txReceipt['contractAddress'])
+
       return join(
-        this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).name.call(),
-        this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).organization.call(),
-        this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).decimals.call(),
-        this.wallet.eth.contract(abi).at(txReceipt['contractAddress']).symbol.call(),
+        contract.name.call(),
+        contract.organization.call(),
+        contract.decimals.call(),
+        contract.symbol.call(),
         this.saveTxReceipt(txReceipt)
       )
     }).then((contractData) => {

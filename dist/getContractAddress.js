@@ -23,7 +23,7 @@ function getContractAddress() {
         var _error = new Error('\n          Warning! No Contracts Found.\n          Please Deploy a new GitToken Contract.\n        ');
         reject(_error);
       } else {
-        console.log('getContractAddress::result[0].address', result[0].address);
+        // console.log('getContractAddress::result[0].address', result[0].address)
         resolve(result[0].address);
       }
     });

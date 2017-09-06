@@ -13,7 +13,7 @@ export default function getContractAddress() {
         `)
         reject(error)
       } else {
-        console.log('getContractAddress::result[0].address', result[0].address)
+        // console.log('getContractAddress::result[0].address', result[0].address)
         resolve(result[0].address)
       }
     })

@@ -24,10 +24,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var GitTokenSignerClient = function () {
   function GitTokenSignerClient(_ref) {
-    var signerIpcPath = _ref.signerIpcPath;
+    var signerIpcPath = _ref.signerIpcPath,
+        deployParams = _ref.deployParams,
+        recoveryShare = _ref.recoveryShare;
     (0, _classCallCheck3.default)(this, GitTokenSignerClient);
 
     this.signerIpcPath = signerIpcPath;
+    this.recoveryShare = recoveryShare;
     this.signerConnect();
   }
 
@@ -38,9 +41,16 @@ var GitTokenSignerClient = function () {
 
       this.signer = _net2.default.connect(this.signerIpcPath);
       this.signer.on('connect', function () {
-        console.log('Connected to GitToken Signer');
-        _this.signer.write((0, _stringify2.default)({ event: 'get_address' }));
-        _this.signer.on('data', function (msg) {
+        console.log('Connected to GitToken Signer'
+
+        // Get Wallet / Signer Address
+        );_this.signer.write((0, _stringify2.default)({ event: 'get_address' })
+
+        // Get Contract
+        );_this.signer.write((0, _stringify2.default)({ event: 'get_contract' })
+
+        // Listen for data
+        );_this.signer.on('data', function (msg) {
           var _JSON$parse = JSON.parse(msg),
               event = _JSON$parse.event,
               result = _JSON$parse.result;
@@ -48,6 +58,10 @@ var GitTokenSignerClient = function () {
           if (event == 'get_address') {
             console.log('GitToken Signer Address: ', result);
             _this.signerAddress = result;
+          } else if (event == 'get_contract') {
+            console.log('contract::result', result);
+          } else if (event == 'error') {
+            console.log('error:result', result);
           }
         });
       });
