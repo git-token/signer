@@ -15,9 +15,6 @@ export default class GitTokenSignerClient {
       // Get Wallet / Signer Address
       this.signer.write(JSON.stringify({ event: 'get_address' }))
 
-      // Get Contract
-      this.signer.write(JSON.stringify({ event: 'get_contract' }))
-
       // Listen for data
       this.signer.on('data', (msg) => {
         const { event, result } = JSON.parse(msg)
@@ -25,7 +22,7 @@ export default class GitTokenSignerClient {
           console.log('GitToken Signer Address: ', result)
           this.signerAddress = result
         } else if (event == 'get_contract') {
-          console.log('contract::result', result)
+          console.log('Set Updated Contract', result)
         } else if (event == 'error') {
           console.log('error:result', result)
         }

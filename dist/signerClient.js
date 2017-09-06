@@ -46,9 +46,6 @@ var GitTokenSignerClient = function () {
         // Get Wallet / Signer Address
         );_this.signer.write((0, _stringify2.default)({ event: 'get_address' })
 
-        // Get Contract
-        );_this.signer.write((0, _stringify2.default)({ event: 'get_contract' })
-
         // Listen for data
         );_this.signer.on('data', function (msg) {
           var _JSON$parse = JSON.parse(msg),
@@ -59,7 +56,7 @@ var GitTokenSignerClient = function () {
             console.log('GitToken Signer Address: ', result);
             _this.signerAddress = result;
           } else if (event == 'get_contract') {
-            console.log('contract::result', result);
+            console.log('Set Updated Contract', result);
           } else if (event == 'error') {
             console.log('error:result', result);
           }
