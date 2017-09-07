@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 
 export default function handleMsg(msg) {
+  console.log('msg', msg)
   let { event, data } = JSON.parse(msg)
   switch(event) {
     case 'sign_transaction':
