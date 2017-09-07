@@ -23,62 +23,61 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function handleMsg(msg) {
   var _this = this;
 
-  console.log('msg', msg);
-
   var _JSON$parse = JSON.parse(msg),
       event = _JSON$parse.event,
-      data = _JSON$parse.data;
+      data = _JSON$parse.data,
+      id = _JSON$parse.id;
 
   switch (event) {
     case 'sign_transaction':
       this.wallet.signTransaction((0, _extends3.default)({}, data)).then(function (signedTx) {
-        _this.socket.write((0, _stringify2.default)({ event: event, result: signedTx, message: 'Transaction Signed' }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: signedTx, message: 'Transaction Signed' }));
         return null;
       }).catch(function (error) {
         console.log('error', error);
-        _this.socket.write((0, _stringify2.default)({ error: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
     case 'sign_message':
       this.wallet.signMessage((0, _extends3.default)({}, data)).then(function (signedMsg) {
-        _this.socket.write((0, _stringify2.default)({ event: event, result: signedMsg, message: 'Message Signed' }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: signedMsg, message: 'Message Signed' }));
         return null;
       }).catch(function (error) {
         console.log('error', error);
-        _this.socket.write((0, _stringify2.default)({ error: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
     case 'get_address':
       this.wallet.getAddress().then(function (address) {
-        _this.socket.write((0, _stringify2.default)({ event: event, result: address, message: 'Signer Address' }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: address, message: 'Signer Address' }));
         return null;
       }).catch(function (error) {
         console.log('error', error);
-        _this.socket.write((0, _stringify2.default)({ error: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
     case 'get_contract':
       this.getContractAddress().then(function (address) {
-        _this.socket.write((0, _stringify2.default)({ event: event, result: address, message: 'Contract Address' }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: address, message: 'Contract Address' }));
       }).catch(function (error) {
-        _this.socket.write((0, _stringify2.default)({ error: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
     case 'deploy_contract':
       this.deployContract((0, _extends3.default)({}, data)).then(function (txReceipt) {
-        _this.socket.write((0, _stringify2.default)({ event: event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }));
       }).catch(function (error) {
-        _this.socket.write((0, _stringify2.default)({ error: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
     case 'sign_contract_transaction':
       this.signContractTransaction((0, _extends3.default)({}, data)).then(function (txReceipt) {
-        _this.socket.write((0, _stringify2.default)({ event: event, result: txReceipt, message: 'GitToken Contract Method Transaction Receipt' }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: txReceipt, message: 'GitToken Contract Method Transaction Receipt' }));
       }).catch(function (error) {
-        _this.socket.write((0, _stringify2.default)({ error: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
     default:
-      this.socket.write((0, _stringify2.default)({ event: 'invalid_event', result: null, message: 'Invalid event: ' + event }));
+      this.socket.write((0, _stringify2.default)({ id: id, event: 'invalid_event', result: null, message: 'Invalid event: ' + event }));
   }
 }
