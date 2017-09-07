@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 
 export default function handleMsg(msg) {
-  let { event, data } = JSON.parse(msg.toString())
+  let { event, data } = JSON.parse(msg)
   switch(event) {
     case 'sign_transaction':
       this.wallet.signTransaction({ ...data }).then((signedTx) => {

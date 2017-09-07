@@ -23,7 +23,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function handleMsg(msg) {
   var _this = this;
 
-  var _JSON$parse = JSON.parse(msg.toString()),
+  var _JSON$parse = JSON.parse(msg),
       event = _JSON$parse.event,
       data = _JSON$parse.data;
 
