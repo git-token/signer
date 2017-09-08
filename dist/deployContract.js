@@ -14,6 +14,10 @@ var _bluebird = require('bluebird');
 
 var _bluebird2 = _interopRequireDefault(_bluebird);
 
+var _registerContract = require('gittoken-registry/dist/registerContract');
+
+var _registerContract2 = _interopRequireDefault(_registerContract);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -71,6 +75,10 @@ function deployContract(_ref) {
         date: new Date().getTime()
       });
     }).then(function (result) {
+      (0, _registerContract2.default)({
+        address: txReceipt['contractAddress']
+      });
+    }).then(function () {
       resolve(txReceipt);
     }).catch(function (error) {
       reject(error);

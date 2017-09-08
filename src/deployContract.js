@@ -1,4 +1,5 @@
 import Promise, { promisifyAll, join } from 'bluebird'
+import registerContract from 'gittoken-registry/dist/registerContract'
 
 /**
  * deployContract | Deployed GitToken Contract
@@ -53,6 +54,10 @@ export default function deployContract({ params, recoveryShare }) {
         date: new Date().getTime()
       })
     }).then((result) => {
+      registerContract({
+        address: txReceipt['contractAddress']
+      })
+    }).then(() => {
       resolve(txReceipt)
     }).catch((error) => {
       reject(error)
