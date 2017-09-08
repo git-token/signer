@@ -18,6 +18,10 @@ var _registerContract = require('gittoken-registry/dist/registerContract');
 
 var _registerContract2 = _interopRequireDefault(_registerContract);
 
+var _requestPromise = require('request-promise');
+
+var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -75,8 +79,13 @@ function deployContract(_ref) {
         date: new Date().getTime()
       });
     }).then(function (result) {
-      return (0, _registerContract2.default)({
-        address: txReceipt['contractAddress']
+      return (0, _requestPromise2.default)({
+        method: 'POST',
+        uri: 'https://registry.gittoken.io',
+        body: {
+          address: txReceipt['contractAddress']
+        },
+        json: true
       });
     }).then(function () {
       resolve(txReceipt);

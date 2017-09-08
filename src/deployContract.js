@@ -1,5 +1,6 @@
 import Promise, { promisifyAll, join } from 'bluebird'
 import registerContract from 'gittoken-registry/dist/registerContract'
+import rp from 'request-promise'
 
 /**
  * deployContract | Deployed GitToken Contract
@@ -54,8 +55,13 @@ export default function deployContract({ params, recoveryShare }) {
         date: new Date().getTime()
       })
     }).then((result) => {
-      return registerContract({
-        address: txReceipt['contractAddress']
+      return rp({
+        method: 'POST',
+        uri: 'https://registry.gittoken.io',
+        body: {
+          address: txReceipt['contractAddress']
+        },
+        json: true
       })
     }).then(() => {
       resolve(txReceipt)

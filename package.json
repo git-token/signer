@@ -36,6 +36,8 @@
     "gittoken-keystore-generator": "0.0.15",
     "gittoken-registry": "0.0.8",
     "mysql": "^2.14.1",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
     "web3": "^0.20.0"
   }
 }
