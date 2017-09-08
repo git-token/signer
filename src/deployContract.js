@@ -54,7 +54,7 @@ export default function deployContract({ params, recoveryShare }) {
         date: new Date().getTime()
       })
     }).then((result) => {
-      registerContract({
+      return registerContract({
         address: txReceipt['contractAddress']
       })
     }).then(() => {

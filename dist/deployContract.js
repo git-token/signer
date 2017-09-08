@@ -75,7 +75,7 @@ function deployContract(_ref) {
         date: new Date().getTime()
       });
     }).then(function (result) {
-      (0, _registerContract2.default)({
+      return (0, _registerContract2.default)({
         address: txReceipt['contractAddress']
       });
     }).then(function () {
