@@ -46,23 +46,46 @@ export default function deployContract({ params, recoveryShare }) {
         this.saveTxReceipt(txReceipt)
       )
     }).then((contractData) => {
-      return this.saveContractAddress({
-        address: txReceipt['contractAddress'],
-        name: contractData[0],
-        organization: contractData[1],
-        decimals: contractData[2],
-        symbol: contractData[3],
-        date: new Date().getTime()
-      })
-    }).then((result) => {
-      return rp({
-        method: 'POST',
-        uri: 'https://registry.gittoken.io',
-        body: {
-          address: txReceipt['contractAddress']
-        },
-        json: true
-      })
+
+      const address = txReceipt['contractAddress']
+      const name = contractData[0]
+      const organization = contractData[1]
+      const decimals = contractData[2]
+      const symbol = contractData[3]
+      const date = new Date().getTime()
+
+      console.log(`
+        address ${address},
+        name ${name},
+        organization ${organization},
+        decimals ${decimals},
+        symbol ${symbol},
+        date ${date}
+      `)
+
+      return join(
+        this.saveContractAddress({
+          address,
+          name,
+          organization,
+          decimals,
+          symbol,
+          date
+        }),
+        rp({
+          method: 'POST',
+          uri: 'https://registry.gittoken.io',
+          body: {
+            address,
+            name,
+            organization,
+            decimals,
+            symbol,
+            date
+          },
+          json: true
+        })
+      )
     }).then(() => {
       resolve(txReceipt)
     }).catch((error) => {

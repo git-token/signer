@@ -70,23 +70,36 @@ function deployContract(_ref) {
 
       return (0, _bluebird.join)(contract.name.call(), contract.organization.call(), contract.decimals.call(), contract.symbol.call(), _this.saveTxReceipt(txReceipt));
     }).then(function (contractData) {
-      return _this.saveContractAddress({
-        address: txReceipt['contractAddress'],
-        name: contractData[0],
-        organization: contractData[1],
-        decimals: contractData[2],
-        symbol: contractData[3],
-        date: new Date().getTime()
-      });
-    }).then(function (result) {
-      return (0, _requestPromise2.default)({
+
+      var address = txReceipt['contractAddress'];
+      var name = contractData[0];
+      var organization = contractData[1];
+      var decimals = contractData[2];
+      var symbol = contractData[3];
+      var date = new Date().getTime();
+
+      console.log('\n        address ' + address + ',\n        name ' + name + ',\n        organization ' + organization + ',\n        decimals ' + decimals + ',\n        symbol ' + symbol + ',\n        date ' + date + '\n      ');
+
+      return (0, _bluebird.join)(_this.saveContractAddress({
+        address: address,
+        name: name,
+        organization: organization,
+        decimals: decimals,
+        symbol: symbol,
+        date: date
+      }), (0, _requestPromise2.default)({
         method: 'POST',
         uri: 'https://registry.gittoken.io',
         body: {
-          address: txReceipt['contractAddress']
+          address: address,
+          name: name,
+          organization: organization,
+          decimals: decimals,
+          symbol: symbol,
+          date: date
         },
         json: true
-      });
+      }));
     }).then(function () {
       resolve(txReceipt);
     }).catch(function (error) {
