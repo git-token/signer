@@ -1,4 +1,4 @@
-const GitTokenSigner = require('../dist/index').default
+const GitTokenSigner = require('../dist/server/index').default
 const {
   mysqlHost,
   mysqlUser,
