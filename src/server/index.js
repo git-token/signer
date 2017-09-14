@@ -4,12 +4,19 @@ import net from 'net'
 import path from 'path'
 import mysql from 'mysql'
 
-import handleMsg from './handleMsg'
-import deployContract from './deployContract'
-import signContractTransaction from './signContractTransaction'
-import saveContractAddress from './saveContractAddress'
-import getContractAddress from './getContractAddress'
-import saveTxReceipt from './saveTxReceipt'
+import {
+  handleMsg
+} from './socket/index'
+
+import {
+  deploy,
+  transaction
+} from './sign/index'
+
+import {
+  insertIntoTxReceipt,
+  updateRegistry
+} from './sql/index'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 
@@ -30,15 +37,15 @@ export default class GitTokenSigner  {
       recover,
       web3Provider
     }).then((wallet) => {
-      this.wallet = wallet
-      this.handleMsg = handleMsg.bind(this)
-      this.deployContract = deployContract.bind(this)
-			this.signContractTransaction = signContractTransaction.bind(this)
-      this.saveContractAddress = saveContractAddress.bind(this)
-      this.getContractAddress = getContractAddress.bind(this)
-      this.saveTxReceipt = saveTxReceipt.bind(this)
 
-      this.gitTokenContract = { abi, unlinked_binary, address: contractAddress }
+      this.wallet                  = wallet
+      this.deploy                  = deploy.bind(this)
+      this.handleMsg               = handleMsg.bind(this)
+      this.transaction             = transaction.bind(this)
+      this.updateRegistry          = updateRegistry.bind(this)
+      this.gitTokenContract        = { abi, unlinked_binary }
+      this.insertIntoTxReceipt     = insertIntoTxReceipt.bind(this)
+      this.selectTokenFromRegistry = selectTokenFromRegistry.bind(this)
 
       this.server = net.createServer((socket) => {
         this.socket = socket;

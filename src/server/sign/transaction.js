@@ -1,24 +1,21 @@
 import Promise, { promisifyAll, join } from 'bluebird'
 
 /**
- * deployContract | Deployed GitToken Contract
- * @param  {Array} params         [ contributor, name, username, organization, symbol, decimals ]
- * @param  {String} recoveryShare Recovery Share for unlocking signer key
- * @return [Promise]              Resolves promise with txReceipt of contract
+ * [transaction description]
+ * @param  {[type]} method        [description]
+ * @param  {[type]} params        [description]
+ * @param  {[type]} recoveryShare [description]
+ * @param  {[type]} organization  [description]
+ * @return [type]                 [description]
  */
-export default function signContractTransaction({ method, params, recoveryShare }) {
+export default function transaction({ method, params, recoveryShare, organization }) {
   return new Promise((resolve, reject) => {
 
-    let { abi, unlinked_binary, address } = this.gitTokenContract;
+    const { abi, unlinked_binary } = this.gitTokenContract;
 
-    Promise.resolve(address).then((exists) => {
-      if (!exists) {
-        return this.getContractAddress()
-      } else {
-        return address;
-      }
-    }).then((_address) => {
-      console.log('_address', _address)
+    let address;
+
+    this.selectTokenFromRegistry({ organization }).then((_address) => {
       address = _address
       return this.wallet.eth.contract(abi).at(address)[method].getData(...params)
     }).then((data) => {
@@ -39,7 +36,10 @@ export default function signContractTransaction({ method, params, recoveryShare 
     }).then((txReceipt) => {
       return join(
         txReceipt,
-        this.saveTxReceipt(txReceipt)
+        this.insertIntoTxReceipt({
+          ...txReceipt,
+          organization
+        })
       )
     }).then((data) => {
       resolve(data[0])
