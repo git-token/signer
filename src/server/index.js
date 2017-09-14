@@ -15,7 +15,8 @@ import {
 
 import {
   insertIntoTxReceipt,
-  updateRegistry
+  updateRegistry,
+  selectTokenFromRegistry
 } from './sql/index'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)

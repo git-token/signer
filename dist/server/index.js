@@ -65,7 +65,7 @@ var GitTokenSigner = function GitTokenSigner(_ref) {
     _this.updateRegistry = _index5.updateRegistry.bind(_this);
     _this.gitTokenContract = { abi: abi, unlinked_binary: unlinked_binary };
     _this.insertIntoTxReceipt = _index5.insertIntoTxReceipt.bind(_this);
-    _this.selectTokenFromRegistry = selectTokenFromRegistry.bind(_this);
+    _this.selectTokenFromRegistry = _index5.selectTokenFromRegistry.bind(_this);
 
     _this.server = _net2.default.createServer(function (socket) {
       _this.socket = socket;
