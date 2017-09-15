@@ -19,7 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param  {Number} [cumulativeGasUsed=0] [description]
  * @param  {Number} [gasUsed=0]           [description]
  * @param  {String} [transactionHash=""]  [description]
- * @param  {String} [organziation=""}]    [description]
+ * @param  {String} [organization=""}]    [description]
  * @return [type]                         [description]
  */
 function insertIntoTxReceipt(_ref) {
@@ -37,8 +37,8 @@ function insertIntoTxReceipt(_ref) {
       gasUsed = _ref$gasUsed === undefined ? 0 : _ref$gasUsed,
       _ref$transactionHash = _ref.transactionHash,
       transactionHash = _ref$transactionHash === undefined ? "" : _ref$transactionHash,
-      _ref$organziation = _ref.organziation,
-      organziation = _ref$organziation === undefined ? "" : _ref$organziation;
+      _ref$organization = _ref.organization,
+      organization = _ref$organization === undefined ? "" : _ref$organization;
 
   return new _bluebird2.default(function (resolve, reject) {
     _this.mysql.query("\n      INSERT INTO transaction_receipts (\n        contract_address,\n        transaction_hash,\n        cumulative_gas_used,\n        block_hash,\n        block_number,\n        gas_used,\n        organization\n      ) VALUES (\n        \"" + contractAddress + "\",\n        \"" + transactionHash + "\",\n        " + cumulativeGasUsed + ",\n        \"" + blockHash + "\",\n        " + blockNumber + ",\n        " + gasUsed + ",\n        \"" + organization + "\"\n      );\n    ", function (error, result) {

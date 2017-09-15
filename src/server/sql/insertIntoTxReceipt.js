@@ -9,7 +9,7 @@ import Promise from 'bluebird'
  * @param  {Number} [cumulativeGasUsed=0] [description]
  * @param  {Number} [gasUsed=0]           [description]
  * @param  {String} [transactionHash=""]  [description]
- * @param  {String} [organziation=""}]    [description]
+ * @param  {String} [organization=""}]    [description]
  * @return [type]                         [description]
  */
 export default function insertIntoTxReceipt({
@@ -19,7 +19,7 @@ export default function insertIntoTxReceipt({
   cumulativeGasUsed=0,
   gasUsed=0,
   transactionHash="",
-  organziation=""
+  organization=""
 }) {
   return new Promise((resolve, reject) => {
     this.mysql.query(`
