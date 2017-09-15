@@ -56,22 +56,22 @@ function handleMsg(msg) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
-    case 'get_contract':
-      this.getContractAddress().then(function (address) {
-        _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: address, message: 'Contract Address' }));
-      }).catch(function (error) {
-        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
-      });
-      break;
+    // case 'get_contract':
+    //   this.getContractAddress().then((address) => {
+    //     this.socket.write(JSON.stringify({ id, event, result: address, message: 'Contract Address' }))
+    //   }).catch((error) => {
+    //     this.socket.write(JSON.stringify({ id, event: 'error', result: error.message }))
+    //   })
+    //   break;
     case 'deploy_contract':
-      this.deployContract((0, _extends3.default)({}, data)).then(function (txReceipt) {
+      this.deploy((0, _extends3.default)({}, data)).then(function (txReceipt) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }));
       }).catch(function (error) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
     case 'sign_contract_transaction':
-      this.signContractTransaction((0, _extends3.default)({}, data)).then(function (txReceipt) {
+      this.transaction((0, _extends3.default)({}, data)).then(function (txReceipt) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: txReceipt, message: 'GitToken Contract Method Transaction Receipt' }));
       }).catch(function (error) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
