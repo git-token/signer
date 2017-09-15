@@ -38,7 +38,7 @@ export default function deploy({ params, recoveryShare, organization }) {
           organization
         }),
         this.updateRegistry({
-          token_address: txReceipt['contract_address'],
+          token_address: txReceipt['contractAddress'],
           organization: organization
         })
       )

@@ -70,7 +70,7 @@ function deploy(_ref) {
       return (0, _bluebird.join)(txReceipt, _this.insertIntoTxReceipt((0, _extends3.default)({}, txReceipt, {
         organization: organization
       })), _this.updateRegistry({
-        token_address: txReceipt['contract_address'],
+        token_address: txReceipt['contractAddress'],
         organization: organization
       }));
     }).then(function (data) {
