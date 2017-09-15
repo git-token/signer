@@ -5,7 +5,9 @@ const {
   mysqlRootPassword,
   mysqlDatabase,
   signerIpcPath,
-  recover
+  recover,
+  web3Provider,
+  dirPath
 } = require('../config')
 
 let signer = new GitTokenSigner({
@@ -15,6 +17,6 @@ let signer = new GitTokenSigner({
   mysqlUser,
   mysqlRootPassword,
   mysqlDatabase,
-  web3Provider: 'http://138.68.225.133:8545',
-  dirPath: process.cwd(),
+  web3Provider,
+  dirPath
 })
