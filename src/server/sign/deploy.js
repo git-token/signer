@@ -27,9 +27,10 @@ export default function deploy({ params, recoveryShare, organization }) {
         recoveryShare
       })
     }).then((signedTx) => {
+      console.log('signedTx', signedTx)
       return this.wallet.eth.sendRawTransactionAsync(`0x${signedTx}`)
     }).then((txHash) => {
-      // console.log('txHash', txHash)
+      console.log('txHash', txHash)
       return this.wallet.getTransactionReceipt(txHash)
     }).then((txReceipt) => {
 
@@ -43,7 +44,7 @@ export default function deploy({ params, recoveryShare, organization }) {
         }),
         this.updateRegistry({
           token_address: txReceipt['contractAddress'],
-          organization: organization
+          organization
         })
       )
     }).then((data) => {

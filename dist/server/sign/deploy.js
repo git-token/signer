@@ -63,11 +63,15 @@ function deploy(_ref) {
         recoveryShare: recoveryShare
       });
     }).then(function (signedTx) {
+      console.log('signedTx', signedTx);
       return _this.wallet.eth.sendRawTransactionAsync('0x' + signedTx);
     }).then(function (txHash) {
       console.log('txHash', txHash);
       return _this.wallet.getTransactionReceipt(txHash);
     }).then(function (txReceipt) {
+
+      console.log('txReceipt', txReceipt);
+
       return (0, _bluebird.join)(txReceipt, _this.insertIntoTxReceipt((0, _extends3.default)({}, txReceipt, {
         organization: organization
       })), _this.updateRegistry({
@@ -75,8 +79,10 @@ function deploy(_ref) {
         organization: organization
       }));
     }).then(function (data) {
+      console.log('data', data);
       resolve(data[0]);
     }).catch(function (error) {
+      console.log('error', error);
       reject(error);
     });
   });
