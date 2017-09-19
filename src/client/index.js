@@ -21,10 +21,8 @@ export default class GitTokenSignerClient {
         if (event == 'get_address') {
           console.log('GitToken Signer Address: ', result)
           this.signerAddress = result
-        } else if (event == 'get_contract') {
-          console.log('Set Updated Contract', result)
         } else if (event == 'error') {
-          console.log('error:result', result)
+          console.log('Signer Client Error: ', result)
         }
       })
     })

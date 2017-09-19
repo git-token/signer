@@ -21,7 +21,7 @@ export default function deploy({ params, recoveryShare, organization }) {
         transaction: {
           data,
           gasPrice: 4e9, // 4 Gwei
-          gasLimit: 6e6,
+          gasLimit: 47e5,
           value: 0
         },
         recoveryShare
@@ -29,8 +29,12 @@ export default function deploy({ params, recoveryShare, organization }) {
     }).then((signedTx) => {
       return this.wallet.eth.sendRawTransactionAsync(`0x${signedTx}`)
     }).then((txHash) => {
+      // console.log('txHash', txHash)
       return this.wallet.getTransactionReceipt(txHash)
     }).then((txReceipt) => {
+
+      console.log('txReceipt', txReceipt)
+
       return join(
         txReceipt,
         this.insertIntoTxReceipt({
@@ -43,8 +47,10 @@ export default function deploy({ params, recoveryShare, organization }) {
         })
       )
     }).then((data) => {
+      console.log('data', data)
       resolve(data[0])
     }).catch((error) => {
+      console.log('error', error)
       reject(error)
     })
   })

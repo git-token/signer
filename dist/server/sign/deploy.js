@@ -57,7 +57,7 @@ function deploy(_ref) {
         transaction: {
           data: data,
           gasPrice: 4e9, // 4 Gwei
-          gasLimit: 6e6,
+          gasLimit: 47e5,
           value: 0
         },
         recoveryShare: recoveryShare
@@ -65,6 +65,7 @@ function deploy(_ref) {
     }).then(function (signedTx) {
       return _this.wallet.eth.sendRawTransactionAsync('0x' + signedTx);
     }).then(function (txHash) {
+      console.log('txHash', txHash);
       return _this.wallet.getTransactionReceipt(txHash);
     }).then(function (txReceipt) {
       return (0, _bluebird.join)(txReceipt, _this.insertIntoTxReceipt((0, _extends3.default)({}, txReceipt, {

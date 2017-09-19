@@ -23,7 +23,13 @@ const config = {
   recover: process.env['RECOVER_KEYSTORE'],
   recoveryShare: process.env['RECOVERY_SHARE'],
   web3Provider: process.env['WEB3_PROVIDER'],
-  dirPath: process.env['KEYSTORE_DIR_PATH']
+  dirPath: process.env['KEYSTORE_DIR_PATH'],
+  contributor: process.env['GITTOKEN_CONTRIBUTOR'],
+  name: process.env['GITTOKEN_NAME'],
+  username: process.env['GITTOKEN_GITHUB_USERNAME'],
+  organization: process.env['GITTOKEN_GITHUB_ORGANIZATION'],
+  symbol: process.env['GITTOKEN_SYMBOL'],
+  decimals: process.env['GITTOKEN_DECIMALS']
 }
 
 module.exports = config

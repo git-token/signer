@@ -55,10 +55,8 @@ var GitTokenSignerClient = function () {
           if (event == 'get_address') {
             console.log('GitToken Signer Address: ', result);
             _this.signerAddress = result;
-          } else if (event == 'get_contract') {
-            console.log('Set Updated Contract', result);
           } else if (event == 'error') {
-            console.log('error:result', result);
+            console.log('Signer Client Error: ', result);
           }
         });
       });

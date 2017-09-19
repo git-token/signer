@@ -30,10 +30,13 @@ export default function transaction({ method, params, recoveryShare, organizatio
         recoveryShare
       })
     }).then((signedTx) => {
+      console.log('signedTx', signedTx)
       return this.wallet.eth.sendRawTransactionAsync(`0x${signedTx}`)
     }).then((txHash) => {
+      console.log('txHash', txHash)
       return this.wallet.getTransactionReceipt(txHash)
     }).then((txReceipt) => {
+      console.log('txReceipt', txReceipt )
       return join(
         txReceipt,
         this.insertIntoTxReceipt({
@@ -42,8 +45,10 @@ export default function transaction({ method, params, recoveryShare, organizatio
         })
       )
     }).then((data) => {
+      console.log('data', data)
       resolve(data[0])
     }).catch((error) => {
+      console.log('error', error)
       reject(error)
     })
   })
