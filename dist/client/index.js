@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -43,22 +39,19 @@ var GitTokenSignerClient = function () {
       this.signer.on('connect', function () {
         console.log('Connected to GitToken Signer');
 
-        // Get Wallet / Signer Address
-        _this.signer.write((0, _stringify2.default)({ event: 'get_address' }));
-
-        // Listen for data
-        _this.signer.on('data', function (msg) {
-          var _JSON$parse = JSON.parse(msg),
-              event = _JSON$parse.event,
-              result = _JSON$parse.result;
-
-          if (event == 'get_address') {
-            console.log('GitToken Signer Address: ', result);
-            _this.signerAddress = result;
-          } else if (event == 'error') {
-            console.log('Signer Client Error: ', result);
-          }
-        });
+        // // Get Wallet / Signer Address
+        // this.signer.write(JSON.stringify({ event: 'get_address' }))
+        //
+        // // Listen for data
+        // this.signer.on('data', (msg) => {
+        //   const { event, result } = JSON.parse(msg)
+        //   if (event == 'get_address') {
+        //     console.log('GitToken Signer Address: ', result)
+        //     this.signerAddress = result
+        //   } else if (event == 'error') {
+        //     console.log('Signer Client Error: ', result)
+        //   }
+        // })
       });
 
       this.signer.on('error', function () {

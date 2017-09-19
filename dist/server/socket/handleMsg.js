@@ -23,10 +23,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function handleMsg(msg) {
   var _this = this;
 
-  var _JSON$parse = JSON.parse(msg),
-      event = _JSON$parse.event,
-      data = _JSON$parse.data,
-      id = _JSON$parse.id;
+  var _msg$toJSON = msg.toJSON(),
+      event = _msg$toJSON.event,
+      data = _msg$toJSON.data,
+      id = _msg$toJSON.id;
 
   switch (event) {
     case 'sign_transaction':
@@ -56,13 +56,6 @@ function handleMsg(msg) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;
-    // case 'get_contract':
-    //   this.getContractAddress().then((address) => {
-    //     this.socket.write(JSON.stringify({ id, event, result: address, message: 'Contract Address' }))
-    //   }).catch((error) => {
-    //     this.socket.write(JSON.stringify({ id, event: 'error', result: error.message }))
-    //   })
-    //   break;
     case 'deploy_contract':
       this.deploy((0, _extends3.default)({}, data)).then(function (txReceipt) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }));
