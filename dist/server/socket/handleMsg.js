@@ -24,7 +24,7 @@ function handleMsg(_msg) {
   var _this = this;
 
   console.log('handleMsg::_msg', _msg);
-  var msg = JSON.parse(_msg);
+  var msg = JSON.parse(_msg.toString('utf8'));
   console.log('handleMsg::msg', msg);
   var event = msg.event,
       data = msg.data,

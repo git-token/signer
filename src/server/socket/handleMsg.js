@@ -2,7 +2,7 @@ import Promise from 'bluebird'
 
 export default function handleMsg(_msg) {
   console.log('handleMsg::_msg', _msg)
-  const msg = JSON.parse(_msg)
+  const msg = JSON.parse(_msg.toString('utf8'))
   console.log('handleMsg::msg', msg)
   let { event, data, id } = msg
   switch(event) {
