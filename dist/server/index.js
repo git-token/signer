@@ -83,7 +83,7 @@ var GitTokenSigner = function GitTokenSigner(_ref) {
       console.log('GitToken Signer Listening at path: ', signerIpcPath);
     });
   }).catch(function (error) {
-    console.log('error', error);
+    console.log('GitToken Keystore Generator Error: ', error);
   });
 };
 

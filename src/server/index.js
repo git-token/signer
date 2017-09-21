@@ -65,7 +65,7 @@ export default class GitTokenSigner  {
       })
 
     }).catch((error) => {
-      console.log('error', error)
+      console.log('GitToken Keystore Generator Error: ', error)
     })
   }
 }
