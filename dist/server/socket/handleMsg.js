@@ -37,7 +37,7 @@ function handleMsg(_msg) {
         return null;
       }).catch(function (error) {
         console.log('error', error);
-        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error }));
       });
       break;
     case 'sign_message':
@@ -46,7 +46,7 @@ function handleMsg(_msg) {
         return null;
       }).catch(function (error) {
         console.log('error', error);
-        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error }));
       });
       break;
     case 'get_address':
@@ -55,7 +55,7 @@ function handleMsg(_msg) {
         return null;
       }).catch(function (error) {
         console.log('error', error);
-        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error }));
       });
       break;
     case 'deploy_contract':
@@ -63,14 +63,14 @@ function handleMsg(_msg) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }));
       }).catch(function (error) {
         console.log('error', error);
-        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error }));
       });
       break;
     case 'sign_contract_transaction':
       this.transaction((0, _extends3.default)({}, data)).then(function (txReceipt) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: txReceipt, message: 'GitToken Contract Method Transaction Receipt' }));
       }).catch(function (error) {
-        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
+        _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error }));
       });
       break;
     default:

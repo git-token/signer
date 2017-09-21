@@ -12,7 +12,7 @@ export default function handleMsg(_msg) {
         return null;
       }).catch((error) => {
         console.log('error', error)
-        this.socket.write(JSON.stringify({ id, event: 'error', result: error.message }))
+        this.socket.write(JSON.stringify({ id, event: 'error', result: error }))
       })
       break;
     case 'sign_message':
@@ -21,7 +21,7 @@ export default function handleMsg(_msg) {
         return null;
       }).catch((error) => {
         console.log('error', error)
-        this.socket.write(JSON.stringify({ id, event: 'error', result: error.message }))
+        this.socket.write(JSON.stringify({ id, event: 'error', result: error }))
       })
       break;
     case 'get_address':
@@ -30,7 +30,7 @@ export default function handleMsg(_msg) {
         return null;
       }).catch((error) => {
         console.log('error', error)
-        this.socket.write(JSON.stringify({ id, event: 'error', result: error.message }))
+        this.socket.write(JSON.stringify({ id, event: 'error', result: error }))
       })
       break;
     case 'deploy_contract':
@@ -38,14 +38,14 @@ export default function handleMsg(_msg) {
         this.socket.write(JSON.stringify({ id, event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }))
       }).catch((error) => {
         console.log('error', error)
-        this.socket.write(JSON.stringify({ id, event: 'error', result: error.message }))
+        this.socket.write(JSON.stringify({ id, event: 'error', result: error }))
       });
       break;
     case 'sign_contract_transaction':
       this.transaction({ ...data }).then((txReceipt) => {
         this.socket.write(JSON.stringify({ id, event, result: txReceipt, message: 'GitToken Contract Method Transaction Receipt' }))
       }).catch((error) => {
-        this.socket.write(JSON.stringify({ id, event: 'error', result: error.message }))
+        this.socket.write(JSON.stringify({ id, event: 'error', result: error }))
       });
       break;
     default:
