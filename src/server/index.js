@@ -61,7 +61,7 @@ export default class GitTokenSigner  {
         database: mysqlDatabase,
       })
 
-      this.server.listen({ path: signerIpcPath}, () => {
+      this.server.listen({ path: signerIpcPath }, () => {
         console.log('GitToken Signer Listening at path: ', signerIpcPath)
       })
 

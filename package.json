@@ -1,6 +1,6 @@
 {
   "name": "gittoken-signer",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "GitToken Transaction and Message Signer",
   "main": "./dist/index.js",
   "scripts": {

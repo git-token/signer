@@ -12,19 +12,19 @@ export default class GitTokenSignerClient {
     this.signer.on('connect', () => {
       console.log('Connected to GitToken Signer')
 
-      // // Get Wallet / Signer Address
-      // this.signer.write(JSON.stringify({ event: 'get_address' }))
-      //
-      // // Listen for data
-      // this.signer.on('data', (msg) => {
-      //   const { event, result } = JSON.parse(msg)
-      //   if (event == 'get_address') {
-      //     console.log('GitToken Signer Address: ', result)
-      //     this.signerAddress = result
-      //   } else if (event == 'error') {
-      //     console.log('Signer Client Error: ', result)
-      //   }
-      // })
+      // Get Wallet / Signer Address
+      this.signer.write(JSON.stringify({ event: 'get_address' }))
+
+      // Listen for data
+      this.signer.on('data', (msg) => {
+        const { event, result } = JSON.parse(msg)
+        if (event == 'get_address') {
+          console.log('GitToken Signer Address: ', result)
+          this.signerAddress = result
+        } else if (event == 'error') {
+          console.log('Signer Client Error: ', result)
+        }
+      })
     })
 
     this.signer.on('error', () => {
