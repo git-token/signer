@@ -1,7 +1,10 @@
 import Promise from 'bluebird'
 
-export default function handleMsg(msg) {
-  let { event, data, id } = msg.toJSON()
+export default function handleMsg(_msg) {
+  console.log('handleMsg::_msg', _msg)
+  const msg = _msg.toJSON()
+  console.log('handleMsg::msg', msg)
+  let { event, data, id } = msg
   switch(event) {
     case 'sign_transaction':
       this.wallet.signTransaction({ ...data }).then((signedTx) => {
@@ -34,6 +37,7 @@ export default function handleMsg(msg) {
       this.deploy({ ...data }).then((txReceipt) => {
         this.socket.write(JSON.stringify({ id, event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }))
       }).catch((error) => {
+        console.log('error', error)
         this.socket.write(JSON.stringify({ id, event: 'error', result: error.message }))
       });
       break;

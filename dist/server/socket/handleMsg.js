@@ -20,13 +20,15 @@ var _bluebird2 = _interopRequireDefault(_bluebird);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function handleMsg(msg) {
+function handleMsg(_msg) {
   var _this = this;
 
-  var _msg$toJSON = msg.toJSON(),
-      event = _msg$toJSON.event,
-      data = _msg$toJSON.data,
-      id = _msg$toJSON.id;
+  console.log('handleMsg::_msg', _msg);
+  var msg = _msg.toJSON();
+  console.log('handleMsg::msg', msg);
+  var event = msg.event,
+      data = msg.data,
+      id = msg.id;
 
   switch (event) {
     case 'sign_transaction':
@@ -60,6 +62,7 @@ function handleMsg(msg) {
       this.deploy((0, _extends3.default)({}, data)).then(function (txReceipt) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: txReceipt, message: 'GitToken Contract Deployed Transaction Receipt' }));
       }).catch(function (error) {
+        console.log('error', error);
         _this.socket.write((0, _stringify2.default)({ id: id, event: 'error', result: error.message }));
       });
       break;

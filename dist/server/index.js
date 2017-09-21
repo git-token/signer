@@ -48,8 +48,7 @@ var GitTokenSigner = function GitTokenSigner(_ref) {
       signerIpcPath = _ref.signerIpcPath,
       dirPath = _ref.dirPath,
       recover = _ref.recover,
-      web3Provider = _ref.web3Provider,
-      contractAddress = _ref.contractAddress;
+      web3Provider = _ref.web3Provider;
   (0, _classCallCheck3.default)(this, GitTokenSigner);
 
   new _index2.default({

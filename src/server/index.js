@@ -30,8 +30,7 @@ export default class GitTokenSigner  {
     signerIpcPath,
     dirPath,
     recover,
-    web3Provider,
-    contractAddress
+    web3Provider
   }) {
     new KeystoreGenerator({
       dirPath,
