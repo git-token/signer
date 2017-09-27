@@ -1,3 +1,4 @@
+import { promisifyAll } from 'bluebird'
 import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import KeystoreGenerator from 'gittoken-keystore-generator/dist/index'
 import net from 'net'
@@ -20,6 +21,7 @@ import {
 } from './sql/index'
 
 const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
+const fs = promisifyAll(require('fs'))
 
 export default class GitTokenSigner  {
   constructor({
@@ -38,6 +40,7 @@ export default class GitTokenSigner  {
       web3Provider
     }).then((wallet) => {
 
+      this.signerIpcPath           = signerIpcPath
       this.wallet                  = wallet
       this.deploy                  = deploy.bind(this)
       this.handleMsg               = handleMsg.bind(this)
@@ -60,12 +63,23 @@ export default class GitTokenSigner  {
         database: mysqlDatabase,
       })
 
-      this.server.listen({ path: signerIpcPath }, () => {
-        console.log('GitToken Signer Listening at path: ', signerIpcPath)
-      })
-
+      // Remove the existing IPC path if exists, then listen for events
+      return fs.unlinkAsync(this.signerIpcPath)
+    }).then(() => {
+        this.listen()
     }).catch((error) => {
-      console.log('GitToken Keystore Generator Error: ', error)
+      if (error.code == 'ENOENT') {
+        this.listen()
+      } else {
+        console.log('GitToken Signer Error: ', error)
+      }
+
+    })
+  }
+
+  listen() {
+    this.server.listen({ path: this.signerIpcPath }, () => {
+      console.log('GitToken Signer Listening at path: ', this.signerIpcPath)
     })
   }
 }

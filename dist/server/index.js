@@ -8,6 +8,12 @@ var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _bluebird = require('bluebird');
+
 var _index = require('gittoken-keystore-generator/dist/index');
 
 var _index2 = _interopRequireDefault(_index);
@@ -38,53 +44,75 @@ var _JSON$parse = JSON.parse(GitTokenContract),
     abi = _JSON$parse.abi,
     unlinked_binary = _JSON$parse.unlinked_binary;
 
-var GitTokenSigner = function GitTokenSigner(_ref) {
-  var _this = this;
+var fs = (0, _bluebird.promisifyAll)(require('fs'));
 
-  var mysqlHost = _ref.mysqlHost,
-      mysqlUser = _ref.mysqlUser,
-      mysqlRootPassword = _ref.mysqlRootPassword,
-      mysqlDatabase = _ref.mysqlDatabase,
-      signerIpcPath = _ref.signerIpcPath,
-      dirPath = _ref.dirPath,
-      recover = _ref.recover,
-      web3Provider = _ref.web3Provider;
-  (0, _classCallCheck3.default)(this, GitTokenSigner);
+var GitTokenSigner = function () {
+  function GitTokenSigner(_ref) {
+    var _this = this;
 
-  new _index2.default({
-    dirPath: dirPath,
-    recover: recover,
-    web3Provider: web3Provider
-  }).then(function (wallet) {
+    var mysqlHost = _ref.mysqlHost,
+        mysqlUser = _ref.mysqlUser,
+        mysqlRootPassword = _ref.mysqlRootPassword,
+        mysqlDatabase = _ref.mysqlDatabase,
+        signerIpcPath = _ref.signerIpcPath,
+        dirPath = _ref.dirPath,
+        recover = _ref.recover,
+        web3Provider = _ref.web3Provider;
+    (0, _classCallCheck3.default)(this, GitTokenSigner);
 
-    _this.wallet = wallet;
-    _this.deploy = _index4.deploy.bind(_this);
-    _this.handleMsg = _index3.handleMsg.bind(_this);
-    _this.transaction = _index4.transaction.bind(_this);
-    _this.updateRegistry = _index5.updateRegistry.bind(_this);
-    _this.gitTokenContract = { abi: abi, unlinked_binary: unlinked_binary };
-    _this.insertIntoTxReceipt = _index5.insertIntoTxReceipt.bind(_this);
-    _this.selectTokenFromRegistry = _index5.selectTokenFromRegistry.bind(_this);
+    new _index2.default({
+      dirPath: dirPath,
+      recover: recover,
+      web3Provider: web3Provider
+    }).then(function (wallet) {
 
-    _this.server = _net2.default.createServer(function (socket) {
-      _this.socket = socket;
-      _this.socket.on('data', _this.handleMsg);
+      _this.signerIpcPath = signerIpcPath;
+      _this.wallet = wallet;
+      _this.deploy = _index4.deploy.bind(_this);
+      _this.handleMsg = _index3.handleMsg.bind(_this);
+      _this.transaction = _index4.transaction.bind(_this);
+      _this.updateRegistry = _index5.updateRegistry.bind(_this);
+      _this.gitTokenContract = { abi: abi, unlinked_binary: unlinked_binary };
+      _this.insertIntoTxReceipt = _index5.insertIntoTxReceipt.bind(_this);
+      _this.selectTokenFromRegistry = _index5.selectTokenFromRegistry.bind(_this);
+
+      _this.server = _net2.default.createServer(function (socket) {
+        _this.socket = socket;
+        _this.socket.on('data', _this.handleMsg);
+      });
+
+      // Instantiate MySql Connection
+      _this.mysql = _mysql2.default.createConnection({
+        host: mysqlHost,
+        user: mysqlUser,
+        password: mysqlRootPassword,
+        database: mysqlDatabase
+      });
+
+      // Remove the existing IPC path if exists, then listen for events
+      return fs.unlinkAsync(_this.signerIpcPath);
+    }).then(function () {
+      _this.listen();
+    }).catch(function (error) {
+      if (error.code == 'ENOENT') {
+        _this.listen();
+      } else {
+        console.log('GitToken Signer Error: ', error);
+      }
     });
+  }
 
-    // Instantiate MySql Connection
-    _this.mysql = _mysql2.default.createConnection({
-      host: mysqlHost,
-      user: mysqlUser,
-      password: mysqlRootPassword,
-      database: mysqlDatabase
-    });
+  (0, _createClass3.default)(GitTokenSigner, [{
+    key: 'listen',
+    value: function listen() {
+      var _this2 = this;
 
-    _this.server.listen({ path: signerIpcPath }, function () {
-      console.log('GitToken Signer Listening at path: ', signerIpcPath);
-    });
-  }).catch(function (error) {
-    console.log('GitToken Keystore Generator Error: ', error);
-  });
-};
+      this.server.listen({ path: this.signerIpcPath }, function () {
+        console.log('GitToken Signer Listening at path: ', _this2.signerIpcPath);
+      });
+    }
+  }]);
+  return GitTokenSigner;
+}();
 
 exports.default = GitTokenSigner;
