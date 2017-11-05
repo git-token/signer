@@ -32,7 +32,7 @@ function handleMsg(_msg) {
 
   switch (event) {
     case 'sign_transaction':
-      this.wallet.signTransaction((0, _extends3.default)({}, data)).then(function (signedTx) {
+      this.signTransaction((0, _extends3.default)({}, data)).then(function (signedTx) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: signedTx, message: 'Transaction Signed' }));
         return null;
       }).catch(function (error) {
@@ -41,7 +41,7 @@ function handleMsg(_msg) {
       });
       break;
     case 'sign_message':
-      this.wallet.signMessage((0, _extends3.default)({}, data)).then(function (signedMsg) {
+      this.signMessage((0, _extends3.default)({}, data)).then(function (signedMsg) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: signedMsg, message: 'Message Signed' }));
         return null;
       }).catch(function (error) {
@@ -50,7 +50,7 @@ function handleMsg(_msg) {
       });
       break;
     case 'get_address':
-      this.wallet.getAddress().then(function (address) {
+      this.getAddress().then(function (address) {
         _this.socket.write((0, _stringify2.default)({ id: id, event: event, result: address, message: 'Signer Address' }));
         return null;
       }).catch(function (error) {

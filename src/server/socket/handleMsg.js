@@ -7,7 +7,7 @@ export default function handleMsg(_msg) {
   let { event, data, id } = msg
   switch(event) {
     case 'sign_transaction':
-      this.wallet.signTransaction({ ...data }).then((signedTx) => {
+      this.signTransaction({ ...data }).then((signedTx) => {
         this.socket.write(JSON.stringify({ id, event, result: signedTx, message: 'Transaction Signed' }))
         return null;
       }).catch((error) => {
@@ -16,7 +16,7 @@ export default function handleMsg(_msg) {
       })
       break;
     case 'sign_message':
-      this.wallet.signMessage({ ...data }).then((signedMsg) => {
+      this.signMessage({ ...data }).then((signedMsg) => {
         this.socket.write(JSON.stringify({ id, event, result: signedMsg, message: 'Message Signed' }))
         return null;
       }).catch((error) => {
@@ -25,7 +25,7 @@ export default function handleMsg(_msg) {
       })
       break;
     case 'get_address':
-      this.wallet.getAddress().then((address) => {
+      this.getAddress().then((address) => {
         this.socket.write(JSON.stringify({ id, event, result: address, message: 'Signer Address' }))
         return null;
       }).catch((error) => {
