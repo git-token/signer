@@ -73,9 +73,6 @@ var GitTokenSigner = function (_KeystoreGenerator) {
       _this.deploy = _index4.deploy.bind(_this);
       _this.handleMsg = _index3.handleMsg.bind(_this);
       _this.transaction = _index4.transaction.bind(_this);
-      _this.updateRegistry = updateRegistry.bind(_this);
-      _this.insertIntoTxReceipt = insertIntoTxReceipt.bind(_this);
-      _this.selectTokenFromRegistry = selectTokenFromRegistry.bind(_this);
 
       _this.server = _net2.default.createServer(function (socket) {
         _this.socket = socket;

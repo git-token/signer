@@ -34,9 +34,6 @@ export default class GitTokenSigner extends KeystoreGenerator {
       this.deploy                  = deploy.bind(this)
       this.handleMsg               = handleMsg.bind(this)
       this.transaction             = transaction.bind(this)
-      this.updateRegistry          = updateRegistry.bind(this)
-      this.insertIntoTxReceipt     = insertIntoTxReceipt.bind(this)
-      this.selectTokenFromRegistry = selectTokenFromRegistry.bind(this)
 
       this.server = net.createServer((socket) => {
         this.socket = socket;
