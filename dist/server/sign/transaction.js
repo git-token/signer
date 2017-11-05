@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
 var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
@@ -31,7 +27,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function transaction(_ref) {
   var _this = this;
 
-  var method = _ref.method,
+  var network = _ref.network,
+      contract = _ref.contract,
+      method = _ref.method,
       params = _ref.params,
       recoveryShare = _ref.recoveryShare,
       organization = _ref.organization;
@@ -45,12 +43,13 @@ function transaction(_ref) {
     var address = void 0;
 
     _this.selectTokenFromRegistry({ organization: organization }).then(function (_address) {
-      var _wallet$eth$contract$;
+      var _wallet$ethProviders$;
 
       address = _address;
-      return (_wallet$eth$contract$ = _this.wallet.eth.contract(abi).at(address)[method]).getData.apply(_wallet$eth$contract$, (0, _toConsumableArray3.default)(params));
+      return (_wallet$ethProviders$ = _this.wallet.ethProviders[network].contract(abi).at(address)[method]).getData.apply(_wallet$ethProviders$, (0, _toConsumableArray3.default)(params));
     }).then(function (data) {
       return _this.wallet.signTransaction({
+        network: network,
         transaction: {
           to: address,
           data: data,
@@ -62,18 +61,12 @@ function transaction(_ref) {
       });
     }).then(function (signedTx) {
       console.log('signedTx', signedTx);
-      return _this.wallet.eth.sendRawTransactionAsync('0x' + signedTx);
+      return _this.wallet.ethProviders[network].sendRawTransactionAsync('0x' + signedTx);
     }).then(function (txHash) {
       console.log('txHash', txHash);
-      return _this.wallet.getTransactionReceipt(txHash);
+      return _this.wallet.getTransactionReceipt({ network: network, txHash: txHash });
     }).then(function (txReceipt) {
-      console.log('txReceipt', txReceipt);
-      return (0, _bluebird.join)(txReceipt, _this.insertIntoTxReceipt((0, _extends3.default)({}, txReceipt, {
-        organization: organization
-      })));
-    }).then(function (data) {
-      console.log('data', data);
-      resolve(data[0]);
+      resolve(txReceipt);
     }).catch(function (error) {
       console.log('error', error);
       reject(error);

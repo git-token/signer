@@ -8,7 +8,7 @@ import Promise, { promisifyAll, join } from 'bluebird'
  * @param  {[type]} organization  [description]
  * @return [type]                 [description]
  */
-export default function transaction({ method, params, recoveryShare, organization }) {
+export default function transaction({ network, contract, method, params, recoveryShare, organization }) {
   return new Promise((resolve, reject) => {
 
     const { abi, unlinked_binary } = this.gitTokenContract;
@@ -17,9 +17,10 @@ export default function transaction({ method, params, recoveryShare, organizatio
 
     this.selectTokenFromRegistry({ organization }).then((_address) => {
       address = _address
-      return this.wallet.eth.contract(abi).at(address)[method].getData(...params)
+      return this.wallet.ethProviders[network].contract(abi).at(address)[method].getData(...params)
     }).then((data) => {
       return this.wallet.signTransaction({
+        network,
         transaction: {
           to: address,
           data,
@@ -31,22 +32,12 @@ export default function transaction({ method, params, recoveryShare, organizatio
       })
     }).then((signedTx) => {
       console.log('signedTx', signedTx)
-      return this.wallet.eth.sendRawTransactionAsync(`0x${signedTx}`)
+      return this.wallet.ethProviders[network].sendRawTransactionAsync(`0x${signedTx}`)
     }).then((txHash) => {
       console.log('txHash', txHash)
-      return this.wallet.getTransactionReceipt(txHash)
+      return this.wallet.getTransactionReceipt({ network, txHash })
     }).then((txReceipt) => {
-      console.log('txReceipt', txReceipt )
-      return join(
-        txReceipt,
-        this.insertIntoTxReceipt({
-          ...txReceipt,
-          organization
-        })
-      )
-    }).then((data) => {
-      console.log('data', data)
-      resolve(data[0])
+      resolve(txReceipt)
     }).catch((error) => {
       console.log('error', error)
       reject(error)

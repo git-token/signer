@@ -9,15 +9,16 @@ import rp from 'request-promise'
  * @param  {[type]} organization  [description]
  * @return [type]                 [description]
  */
-export default function deploy({ params, recoveryShare, organization }) {
+export default function deploy({ network, contract, params, recoveryShare, organization }) {
   return new Promise((resolve, reject) => {
 
     const { abi, unlinked_binary } = this.gitTokenContract;
 
-    Promise.resolve(this.wallet.eth.contract(abi).new.getData(...params, {
+    Promise.resolve(this.wallet.ethProviders[network].contract(abi).new.getData(...params, {
       data: unlinked_binary
     })).then((data) => {
       return this.wallet.signTransaction({
+        network,
         transaction: {
           data,
           gasPrice: 4e9, // 4 Gwei
@@ -28,28 +29,12 @@ export default function deploy({ params, recoveryShare, organization }) {
       })
     }).then((signedTx) => {
       console.log('signedTx', signedTx)
-      return this.wallet.eth.sendRawTransactionAsync(`0x${signedTx}`)
+      return this.wallet.ethProviders[network].sendRawTransactionAsync(`0x${signedTx}`)
     }).then((txHash) => {
       console.log('txHash', txHash)
-      return this.wallet.getTransactionReceipt(txHash)
+      return this.wallet.getTransactionReceipt({ network, txHash })
     }).then((txReceipt) => {
-
-      console.log('txReceipt', txReceipt)
-
-      return join(
-        txReceipt,
-        this.insertIntoTxReceipt({
-          ...txReceipt,
-          organization
-        }),
-        this.updateRegistry({
-          token_address: txReceipt['contractAddress'],
-          organization
-        })
-      )
-    }).then((data) => {
-      console.log('data', data)
-      resolve(data[0])
+      resolve(txReceipt)
     }).catch((error) => {
       console.log('error', error)
       reject(error)
