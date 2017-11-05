@@ -12,12 +12,10 @@ import rp from 'request-promise'
 export default function deploy({ network, contract, params, recoveryShare, organization }) {
   return new Promise((resolve, reject) => {
 
-    const { abi, unlinked_binary } = this.gitTokenContract;
-
-    Promise.resolve(this.wallet.ethProviders[network].contract(abi).new.getData(...params, {
+    Promise.resolve(this.ethProviders[network].contract(abi).new.getData(...params, {
       data: unlinked_binary
     })).then((data) => {
-      return this.wallet.signTransaction({
+      return this.signTransaction({
         network,
         transaction: {
           data,
@@ -29,10 +27,10 @@ export default function deploy({ network, contract, params, recoveryShare, organ
       })
     }).then((signedTx) => {
       console.log('signedTx', signedTx)
-      return this.wallet.ethProviders[network].sendRawTransactionAsync(`0x${signedTx}`)
+      return this.ethProviders[network].sendRawTransactionAsync(`0x${signedTx}`)
     }).then((txHash) => {
       console.log('txHash', txHash)
-      return this.wallet.getTransactionReceipt({ network, txHash })
+      return this.getTransactionReceipt({ network, txHash })
     }).then((txReceipt) => {
       resolve(txReceipt)
     }).catch((error) => {

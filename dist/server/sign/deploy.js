@@ -41,17 +41,12 @@ function deploy(_ref) {
       organization = _ref.organization;
 
   return new _bluebird2.default(function (resolve, reject) {
-    var _wallet$ethProviders$;
+    var _ethProviders$network;
 
-    var _gitTokenContract = _this.gitTokenContract,
-        abi = _gitTokenContract.abi,
-        unlinked_binary = _gitTokenContract.unlinked_binary;
-
-
-    _bluebird2.default.resolve((_wallet$ethProviders$ = _this.wallet.ethProviders[network].contract(abi).new).getData.apply(_wallet$ethProviders$, (0, _toConsumableArray3.default)(params).concat([{
+    _bluebird2.default.resolve((_ethProviders$network = _this.ethProviders[network].contract(abi).new).getData.apply(_ethProviders$network, (0, _toConsumableArray3.default)(params).concat([{
       data: unlinked_binary
     }]))).then(function (data) {
-      return _this.wallet.signTransaction({
+      return _this.signTransaction({
         network: network,
         transaction: {
           data: data,
@@ -63,10 +58,10 @@ function deploy(_ref) {
       });
     }).then(function (signedTx) {
       console.log('signedTx', signedTx);
-      return _this.wallet.ethProviders[network].sendRawTransactionAsync('0x' + signedTx);
+      return _this.ethProviders[network].sendRawTransactionAsync('0x' + signedTx);
     }).then(function (txHash) {
       console.log('txHash', txHash);
-      return _this.wallet.getTransactionReceipt({ network: network, txHash: txHash });
+      return _this.getTransactionReceipt({ network: network, txHash: txHash });
     }).then(function (txReceipt) {
       resolve(txReceipt);
     }).catch(function (error) {

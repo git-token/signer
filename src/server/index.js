@@ -1,9 +1,7 @@
 import { promisifyAll } from 'bluebird'
-import GitTokenContract from 'gittoken-contracts/build/contracts/GitToken.json'
 import KeystoreGenerator from 'gittoken-keystore-generator/dist/index'
 import net from 'net'
 import path from 'path'
-import mysql from 'mysql'
 
 import {
   handleMsg
@@ -14,16 +12,9 @@ import {
   transaction
 } from './sign/index'
 
-import {
-  insertIntoTxReceipt,
-  updateRegistry,
-  selectTokenFromRegistry
-} from './sql/index'
-
-const { abi, unlinked_binary } = JSON.parse(GitTokenContract)
 const fs = promisifyAll(require('fs'))
 
-export default class GitTokenSigner  {
+export default class GitTokenSigner extends KeystoreGenerator {
   constructor({
     mysqlHost,
     mysqlUser,
@@ -32,35 +23,24 @@ export default class GitTokenSigner  {
     signerIpcPath,
     dirPath,
     recover,
-    web3Provider
+    web3Provider,
+    torvaldsProvider
   }) {
-    new KeystoreGenerator({
-      dirPath,
-      recover,
-      web3Provider
-    }).then((wallet) => {
+    super({ dirPath, recover, web3Provider, torvaldsProvider })
+
+    Promise.resolve().then(() => {
 
       this.signerIpcPath           = signerIpcPath
-      this.wallet                  = wallet
       this.deploy                  = deploy.bind(this)
       this.handleMsg               = handleMsg.bind(this)
       this.transaction             = transaction.bind(this)
       this.updateRegistry          = updateRegistry.bind(this)
-      this.gitTokenContract        = { abi, unlinked_binary }
       this.insertIntoTxReceipt     = insertIntoTxReceipt.bind(this)
       this.selectTokenFromRegistry = selectTokenFromRegistry.bind(this)
 
       this.server = net.createServer((socket) => {
         this.socket = socket;
         this.socket.on('data', this.handleMsg)
-      })
-
-      // Instantiate MySql Connection
-      this.mysql = mysql.createConnection({
-        host: mysqlHost,
-        user: mysqlUser,
-        password: mysqlRootPassword,
-        database: mysqlDatabase,
       })
 
       // Remove the existing IPC path if exists, then listen for events

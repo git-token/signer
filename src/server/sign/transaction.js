@@ -10,16 +10,13 @@ import Promise, { promisifyAll, join } from 'bluebird'
  */
 export default function transaction({ network, contract, method, params, recoveryShare, organization }) {
   return new Promise((resolve, reject) => {
-
-    const { abi, unlinked_binary } = this.gitTokenContract;
-
     let address;
 
     this.selectTokenFromRegistry({ organization }).then((_address) => {
       address = _address
-      return this.wallet.ethProviders[network].contract(abi).at(address)[method].getData(...params)
+      return this.ethProviders[network].contract(abi).at(address)[method].getData(...params)
     }).then((data) => {
-      return this.wallet.signTransaction({
+      return this.signTransaction({
         network,
         transaction: {
           to: address,
@@ -32,10 +29,10 @@ export default function transaction({ network, contract, method, params, recover
       })
     }).then((signedTx) => {
       console.log('signedTx', signedTx)
-      return this.wallet.ethProviders[network].sendRawTransactionAsync(`0x${signedTx}`)
+      return this.ethProviders[network].sendRawTransactionAsync(`0x${signedTx}`)
     }).then((txHash) => {
       console.log('txHash', txHash)
-      return this.wallet.getTransactionReceipt({ network, txHash })
+      return this.getTransactionReceipt({ network, txHash })
     }).then((txReceipt) => {
       resolve(txReceipt)
     }).catch((error) => {
