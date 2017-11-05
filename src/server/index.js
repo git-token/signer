@@ -16,10 +16,6 @@ const fs = promisifyAll(require('fs'))
 
 export default class GitTokenSigner extends KeystoreGenerator {
   constructor({
-    mysqlHost,
-    mysqlUser,
-    mysqlRootPassword,
-    mysqlDatabase,
     signerIpcPath,
     dirPath,
     recover,

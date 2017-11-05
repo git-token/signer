@@ -54,11 +54,7 @@ var GitTokenSigner = function (_KeystoreGenerator) {
   (0, _inherits3.default)(GitTokenSigner, _KeystoreGenerator);
 
   function GitTokenSigner(_ref) {
-    var mysqlHost = _ref.mysqlHost,
-        mysqlUser = _ref.mysqlUser,
-        mysqlRootPassword = _ref.mysqlRootPassword,
-        mysqlDatabase = _ref.mysqlDatabase,
-        signerIpcPath = _ref.signerIpcPath,
+    var signerIpcPath = _ref.signerIpcPath,
         dirPath = _ref.dirPath,
         recover = _ref.recover,
         web3Provider = _ref.web3Provider,
