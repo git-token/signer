@@ -12,6 +12,9 @@ import {
   transaction
 } from './sign/index'
 
+import GitTokenRegistry from 'gittoken-contracts/build/contracts/GitTokenRegistry.json'
+
+
 const fs = promisifyAll(require('fs'))
 
 export default class GitTokenSigner extends KeystoreGenerator {
@@ -23,6 +26,10 @@ export default class GitTokenSigner extends KeystoreGenerator {
     torvaldsProvider
   }) {
     super({ dirPath, recover, web3Provider, torvaldsProvider })
+
+    this.contracts = {
+      GitTokenRegistry
+    }
 
     Promise.resolve().then(() => {
 

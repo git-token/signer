@@ -3,11 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
-
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
 exports.default = transaction;
 
 var _bluebird = require('bluebird');
@@ -16,14 +11,6 @@ var _bluebird2 = _interopRequireDefault(_bluebird);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * [transaction description]
- * @param  {[type]} method        [description]
- * @param  {[type]} params        [description]
- * @param  {[type]} recoveryShare [description]
- * @param  {[type]} organization  [description]
- * @return [type]                 [description]
- */
 function transaction(_ref) {
   var _this = this;
 
@@ -35,36 +22,69 @@ function transaction(_ref) {
       organization = _ref.organization;
 
   return new _bluebird2.default(function (resolve, reject) {
-    var address = void 0;
 
-    _this.selectTokenFromRegistry({ organization: organization }).then(function (_address) {
-      var _ethProviders$network;
+    console.log('transaction::network', network);
+    console.log('transaction::contract', contract);
+    console.log('transaction::method', method);
+    console.log('transaction::params', params);
+    console.log('transaction::recoveryShare', recoveryShare);
+    console.log('transaction::organization', organization);
 
-      address = _address;
-      return (_ethProviders$network = _this.ethProviders[network].contract(abi).at(address)[method]).getData.apply(_ethProviders$network, (0, _toConsumableArray3.default)(params));
-    }).then(function (data) {
-      return _this.signTransaction({
-        network: network,
-        transaction: {
-          to: address,
-          data: data,
-          gasPrice: 4e9, // 4 Gwei
-          gasLimit: 6e6,
-          value: 0
-        },
-        recoveryShare: recoveryShare
-      });
-    }).then(function (signedTx) {
-      console.log('signedTx', signedTx);
-      return _this.ethProviders[network].sendRawTransactionAsync('0x' + signedTx);
-    }).then(function (txHash) {
-      console.log('txHash', txHash);
-      return _this.getTransactionReceipt({ network: network, txHash: txHash });
-    }).then(function (txReceipt) {
-      resolve(txReceipt);
-    }).catch(function (error) {
-      console.log('error', error);
-      reject(error);
-    });
+    var _JSON$parse = JSON.parse(_this.contracts[contract]),
+        abi = _JSON$parse.abi,
+        unlinked_binary = _JSON$parse.unlinked_binary,
+        networks = _JSON$parse.networks;
+
+    var networkID = function networkID(_ref2) {
+      var network = _ref2.network;
+
+      switch (network) {
+        case 'torvalds':
+          return '9';
+          break;
+        // case 'ethereum':
+        //   return '1';
+        //   break;
+        default:
+          return '9';
+      }
+    };
+
+    console.log('networkID({ network })', networkID({ network: network }));
+    console.log('networks', networks);
+    var address = networks[networkID({ network: network })].address;
+    // const data = this.ethProviders[network].contract(abi).at(address)[method].getData(...params)
+
+    console.log('address', address);
+    // console.log('data', data)
+
+    // let address;
+    // this.selectTokenFromRegistry({ organization }).then((_address) => {
+    //   address = _address
+    //   return this.ethProviders[network].contract(abi).at(address)[method].getData(...params)
+    // }).then((data) => {
+    //   return this.signTransaction({
+    //     network,
+    //     transaction: {
+    //       to: address,
+    //       data,
+    //       gasPrice: 4e9, // 4 Gwei
+    //       gasLimit: 6e6,
+    //       value: 0
+    //     },
+    //     recoveryShare
+    //   })
+    // }).then((signedTx) => {
+    //   console.log('signedTx', signedTx)
+    //   return this.ethProviders[network].sendRawTransactionAsync(`0x${signedTx}`)
+    // }).then((txHash) => {
+    //   console.log('txHash', txHash)
+    //   return this.getTransactionReceipt({ network, txHash })
+    // }).then((txReceipt) => {
+    //   resolve(txReceipt)
+    // }).catch((error) => {
+    //   console.log('error', error)
+    //   reject(error)
+    // })
   });
 }
